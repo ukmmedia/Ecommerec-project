@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title><%= product.name %> · Loam & Co</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="/user/store.css">
+</head>
+<body>
+  <%- include('_header', { user, cartCount: (typeof cartCount !== 'undefined' ? cartCount : 0) }) %>
+
+  <div class="detail-wrap">
+    <img class="detail-img" src="<%= product.image %>" alt="<%= product.name %>" onerror="this.style.display='none'">
+    <div>
+      <div class="detail-cat"><%= product.category %></div>
+      <h1 class="detail-name"><%= product.name %></h1>
+      <div class="detail-price">Rs <%= product.price.toLocaleString() %></div>
+      <p class="detail-desc"><%= product.description %></p>
+      <p class="stock-note">
+        <% if (product.stock > 10) { %>In stock
+        <% } else if (product.stock > 0) { %>Only <%= product.stock %> left in stock
+        <% } else { %>Out of stock<% } %>
+      </p>
+      <% if (product.stock > 0) { %>
+        <form method="POST" action="/cart/add/<%= product.id %>">
+          <button type="submit" class="btn btn-sand" style="width:100%; padding:14px;">Add to Cart</button>
+        </form>
+      <% } else { %>
+        <button class="btn" style="width:100%; padding:14px; opacity:0.5;" disabled>Out of Stock</button>
+      <% } %>
+    </div>
+  </div>
+
+  <footer class="site-footer">© 2026 Loam & Co. All rights reserved.</footer>
+</body>
+</html>

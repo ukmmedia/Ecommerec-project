@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Your Cart · Loam & Co</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="/user/store.css">
+</head>
+<body>
+  <%- include('_header', { user, cartCount: cart.reduce((s,i)=>s+i.qty,0) }) %>
+
+  <div class="cart-wrap">
+    <h1 class="display" style="font-size:26px; margin-bottom:24px;">Your Cart</h1>
+
+    <% if (cart.length === 0) { %>
+      <div class="empty-block">
+        <p>Your cart is empty.</p>
+        <a href="/" class="btn" style="margin-top:12px;">Continue Shopping</a>
+      </div>
+    <% } else { %>
+      <% cart.forEach(item => { %>
+        <div class="cart-item">
+          <img src="<%= item.image %>" onerror="this.style.display='none'">
+          <div>
+            <div class="cart-item-name"><%= item.name %></div>
+            <div class="cart-item-meta">Qty: <%= item.qty %> × Rs <%= item.price.toLocaleString() %></div>
+          </div>
+          <div class="cart-item-price">Rs <%= (item.price * item.qty).toLocaleString() %></div>
+          <form method="POST" action="/cart/remove/<%= item.id %>">
+            <button type="submit" class="remove-btn">Remove</button>
+          </form>
+        </div>
+      <% }) %>
+
+      <div class="cart-summary">
+        <span>Total</span>
+        <span>Rs <%= total.toLocaleString() %></span>
+      </div>
+
+      <a href="/checkout" class="btn btn-sand btn-block" style="margin-top:24px; padding:14px;">Proceed to Checkout</a>
+    <% } %>
+  </div>
+</body>
+</html>

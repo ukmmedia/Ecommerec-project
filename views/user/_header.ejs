@@ -1,0 +1,19 @@
+<header class="site-header">
+  <a href="/" class="logo">Loam<span>&</span>Co</a>
+  <nav class="nav-links">
+    <a href="/">Shop</a>
+    <% if (user) { %><a href="/my-orders">My Orders</a><% } %>
+  </nav>
+  <div class="nav-actions">
+    <a href="/cart" class="cart-link">
+      Cart <% if (cartCount > 0) { %><span class="cart-badge"><%= cartCount %></span><% } %>
+    </a>
+    <% if (user) { %>
+      <form method="POST" action="/logout" style="display:inline;">
+        <button type="submit" class="btn btn-outline" style="padding:8px 16px; font-size:13.5px;">Log out</button>
+      </form>
+    <% } else { %>
+      <a href="/login" class="btn btn-outline" style="padding:8px 16px; font-size:13.5px;">Log in</a>
+    <% } %>
+  </div>
+</header>
