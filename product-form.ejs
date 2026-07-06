@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title><%= product ? 'Edit Product' : 'Add Product' %> · Admin Console</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="/admin/admin.css">
+</head>
+<body>
+<div class="app-shell">
+  <%- include('_sidebar', { active: 'products' }) %>
+
+  <main class="main">
+    <div class="page-header">
+      <div>
+        <h1><%= product ? 'Edit Product' : 'Add Product' %></h1>
+        <p class="sub"><%= product ? 'Update details for this item.' : 'Add a new item to your catalog.' %></p>
+      </div>
+    </div>
+
+    <div class="form-card">
+      <form method="POST" action="<%= product ? `/admin/products/${product.id}/edit` : '/admin/products/new' %>">
+        <div class="form-row">
+          <label>Product Name</label>
+          <input type="text" name="name" required value="<%= product ? product.name : '' %>" placeholder="e.g. Leather Wallet">
+        </div>
+        <div class="form-row">
+          <label>Category</label>
+          <input type="text" name="category" required value="<%= product ? product.category : '' %>" placeholder="e.g. Accessories">
+        </div>
+        <div class="form-row">
+          <label>Price (Rs)</label>
+          <input type="number" name="price" step="0.01" required value="<%= product ? product.price : '' %>" placeholder="2500">
+        </div>
+        <div class="form-row">
+          <label>Stock Quantity</label>
+          <input type="number" name="stock" required value="<%= product ? product.stock : '' %>" placeholder="40">
+        </div>
+        <div class="form-row">
+          <label>Image URL</label>
+          <input type="text" name="image" value="<%= product ? product.image : '' %>" placeholder="/images/product1.jpg">
+        </div>
+        <div class="form-row">
+          <label>Description</label>
+          <textarea name="description" placeholder="Short product description..."><%= product ? product.description : '' %></textarea>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn"><%= product ? 'Save Changes' : 'Add Product' %></button>
+          <a href="/admin/products" class="btn btn-ghost">Cancel</a>
+        </div>
+      </form>
+    </div>
+  </main>
+</div>
+</body>
+</html>

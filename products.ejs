@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Products · Admin Console</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="/admin/admin.css">
+</head>
+<body>
+<div class="app-shell">
+  <%- include('_sidebar', { active: 'products' }) %>
+
+  <main class="main">
+    <div class="page-header">
+      <div>
+        <h1>Products</h1>
+        <p class="sub">Manage your store's catalog.</p>
+      </div>
+      <a href="/admin/products/new" class="btn">+ Add Product</a>
+    </div>
+
+    <% if (success && success.length) { %><div class="msg success"><%= success[0] %></div><% } %>
+    <% if (error && error.length) { %><div class="msg error"><%= error[0] %></div><% } %>
+
+    <div class="panel">
+      <% if (products.length === 0) { %>
+        <div class="empty-state">No products yet. Add your first one to get started.</div>
+      <% } else { %>
+        <table>
+          <thead>
+            <tr><th></th><th>Name</th><th>Category</th><th>Price</th><th>Stock</th><th></th></tr>
+          </thead>
+          <tbody>
+            <% products.forEach(p => { %>
+              <tr>
+                <td><img class="thumb" src="<%= p.image %>" onerror="this.style.opacity=0"></td>
+                <td><%= p.name %></td>
+                <td><%= p.category %></td>
+                <td>Rs <%= p.price.toLocaleString() %></td>
+                <td><%= p.stock < 10 ? `<span class="badge badge-low">${p.stock}</span>` : p.stock %></td>
+                <td style="text-align:right; white-space:nowrap;">
+                  <a href="/admin/products/<%= p.id %>/edit" class="btn btn-ghost btn-sm">Edit</a>
+                  <form method="POST" action="/admin/products/<%= p.id %>/delete" style="display:inline;" onsubmit="return confirm('Delete this product?')">
+                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                  </form>
+                </td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      <% } %>
+    </div>
+  </main>
+</div>
+</body>
+</html>

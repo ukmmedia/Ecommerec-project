@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Dashboard · Admin Console</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="/admin/admin.css">
+</head>
+<body>
+<div class="app-shell">
+  <%- include('_sidebar', { active: 'dashboard' }) %>
+
+  <main class="main">
+    <div class="page-header">
+      <div>
+        <h1>Dashboard</h1>
+        <p class="sub">Overview of your store's performance.</p>
+      </div>
+    </div>
+
+    <div class="stat-grid">
+      <div class="stat-card">
+        <div class="stat-label">Total Revenue</div>
+        <div class="stat-value">Rs <%= stats.totalRevenue.toLocaleString() %></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Total Orders</div>
+        <div class="stat-value"><%= stats.totalOrders %></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Total Products</div>
+        <div class="stat-value"><%= stats.totalProducts %></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Registered Users</div>
+        <div class="stat-value"><%= stats.totalUsers %></div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-header">Recent Orders</div>
+      <% if (recentOrders.length === 0) { %>
+        <div class="empty-state">No orders yet. They'll show up here once customers check out.</div>
+      <% } else { %>
+        <table>
+          <thead>
+            <tr><th>Order</th><th>Customer</th><th>Items</th><th>Total</th><th>Status</th></tr>
+          </thead>
+          <tbody>
+            <% recentOrders.forEach(order => { %>
+              <tr>
+                <td>#<%= order.id %></td>
+                <td><%= order.userName %></td>
+                <td><%= order.items.length %> item(s)</td>
+                <td>Rs <%= order.total.toLocaleString() %></td>
+                <td><span class="badge badge-<%= order.status.toLowerCase() %>"><%= order.status %></span></td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      <% } %>
+    </div>
+
+    <% if (lowStock.length > 0) { %>
+    <div class="panel">
+      <div class="panel-header">Low Stock Alert</div>
+      <table>
+        <thead><tr><th>Product</th><th>Category</th><th>Stock Left</th></tr></thead>
+        <tbody>
+          <% lowStock.forEach(p => { %>
+            <tr>
+              <td><%= p.name %></td>
+              <td><%= p.category %></td>
+              <td><span class="badge badge-low"><%= p.stock %> left</span></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+    <% } %>
+  </main>
+</div>
+</body>
+</html>

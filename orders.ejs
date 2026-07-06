@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Orders · Admin Console</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="/admin/admin.css">
+</head>
+<body>
+<div class="app-shell">
+  <%- include('_sidebar', { active: 'orders' }) %>
+
+  <main class="main">
+    <div class="page-header">
+      <div>
+        <h1>Orders</h1>
+        <p class="sub">Track and update customer orders.</p>
+      </div>
+    </div>
+
+    <div class="panel">
+      <% if (orders.length === 0) { %>
+        <div class="empty-state">No orders placed yet.</div>
+      <% } else { %>
+        <table>
+          <thead>
+            <tr><th>Order</th><th>Customer</th><th>Phone</th><th>Items</th><th>Total</th><th>Status</th></tr>
+          </thead>
+          <tbody>
+            <% orders.forEach(order => { %>
+              <tr>
+                <td>#<%= order.id %></td>
+                <td><%= order.userName %></td>
+                <td><%= order.phone %></td>
+                <td><%= order.items.map(i => `${i.name} ×${i.qty}`).join(', ') %></td>
+                <td>Rs <%= order.total.toLocaleString() %></td>
+                <td>
+                  <form method="POST" action="/admin/orders/<%= order.id %>/status" onchange="this.submit()">
+                    <select name="status" class="select-inline">
+                      <option value="Pending" <%= order.status === 'Pending' ? 'selected' : '' %>>Pending</option>
+                      <option value="Shipped" <%= order.status === 'Shipped' ? 'selected' : '' %>>Shipped</option>
+                      <option value="Delivered" <%= order.status === 'Delivered' ? 'selected' : '' %>>Delivered</option>
+                      <option value="Cancelled" <%= order.status === 'Cancelled' ? 'selected' : '' %>>Cancelled</option>
+                    </select>
+                  </form>
+                </td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      <% } %>
+    </div>
+  </main>
+</div>
+</body>
+</html>
